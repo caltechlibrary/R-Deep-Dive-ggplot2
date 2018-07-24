@@ -72,16 +72,15 @@ ggplot(data=periodicTable,aes(x=mass,y=density)) + geom_point()
 
 We can see from Exercise 1 the periodicity behind the periodic table :) We can use color to further pick out the changes from the table by coloring the points according to what period they are in. We can do this by specifying an additional aesthetic using "aes()".
 
+Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*.
 Recreate your graph from above, but add the following to the main plot aesthetics, after the x and y specification:
 color=period
-
-Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*.
 
 ```{r adding_color}
 ggplot(data=periodicTable,aes(x=mass,y=density,color=period)) + geom_point()
 ```
 
-This shows us the variation, but it would be nicer to have the periods as discrete colors and not a gradient. The reason it plotted period as a gradient is because in the data frame, period is an integer. We want period to be a categorical value, or a factor, in this case. This can be done by changing color=period to color=factor(period). 
+This shows us the variation, but it would be more accurate to have the periods as discrete colors and not a gradient. The reason it plotted period as a gradient is because in the data frame, period is an integer. ggplot treats number and integer vectors as continuous variables by default - hence it uses a gradient color scheme. In this case, we want period to be a categorical value, or a factor. This can be done by changing color=period to color=factor(period).
 
 Make this modification and replot. (Watch your parenthesis!)
 
@@ -91,13 +90,14 @@ Add a new chunk by clicking the *Insert Chunk* button (top of the window on the 
 ggplot(data=periodicTable,aes(x=mass,y=density,color=factor(period))) + geom_point()
 ```
 
-Alternately you can change the data type for that column directly in the data set with:
+Alternately, to get the same effect, you can change the data type for that column directly in the data frame. You can do that with the following command:
 
 ```{r eval=F, echo=T}
 periodicTable$period <- factor(periodicTable$period)
 ```
 
 However, if you're not sure you want to permanently change a data type, just modify it in the ggplot expression.
+## Can you change it back to an integer? 
 
 
 # Exercise 3 - Adding a Fit
@@ -108,14 +108,15 @@ Let's go back to our original graph of mass versus numb:
 ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point()
 ```
 
-We want to add a linear fit to this graph. We can do this by adding a layer of geom_smooth() and specifying the model we want to model with. 
+We want to add a linear fit to this graph. We can do this by adding a layer of geom_smooth() and specifying the model we want to model with.
+# add info on method
 
 ```{r layered_geoms_lm}
 ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point() + geom_smooth(method="lm")
 ```
 
-It might be useful to display the parameters of the fitted line on the graph. How can we do that?
-Although the plot is calculated by ggplot, we need to do the calculation for the fit ouside of ggplot in order to get the exact numbers. Then we can add them to the plot.
+It might be useful to display the parameters, like slope and intercept, of the fitted line on the graph. How can we do that?
+Although the plot is calculated by ggplot, we need to do the calculation for the fit outside of ggplot in order to get the exact numbers. Then we can add them to the plot.
 
 The following code runs a simple linear model approximation on our data ("lm"), stores it in an object called 'mass_correlation', and displays the slope and intercept values of the line we generated above. Run the code below. Do the numbers make sense?
 
@@ -134,7 +135,6 @@ mass_correlation$coefficients[2]
 Since we are focusing on plotting and not on statistics, let's figure out how to get this on our plot. Believe it or not this is not as straightforward as one might think.
 
 
-                                       
 ```{r}
 ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point() + geom_smooth(method="lm") + annotate("text", x=5, y=5, label=mass_correlation$coefficients[1])
 ```
@@ -156,7 +156,8 @@ You can pop out the graph into a separate window to de-smush the x-axis by click
 Let's add some axes titles and a chart title to our type plot from Exercise 4. We can add a layer of labels using the following:
 + labs(x = "X Axis Label", y = "Y Axis Label", title = "Plot Title")
 
-Recreate the graph from Exercise 4 and label the X-axis "Element Type", Y-axis "Number of Elements", and the plot title "Numbers of Elements by Type". Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*.
+Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*.
+Recreate the graph from Exercise 4 and label the X-axis "Element Type", Y-axis "Number of Elements", and the plot title "Numbers of Elements by Type". 
 
 ```{r label_customization}
 ggplot(data=periodicTable) + geom_bar(mapping=aes(x=type)) + labs(x="Element Type", y="Number of Elements", title="Numbers of Elements by Type")
@@ -180,7 +181,7 @@ ggplot(data=periodicTable) + geom_bar(mapping=aes(x=type)) + labs(x="Element Typ
 
 Let's say you want to experiment with a few different label types, but do not want to have to re-type the entire ggplot command every time you make your graph. At any point, with any number of layers, a ggplot can be assigned to an object, and that object can then be called and modified with further layers.
 
-Run the following code chunk to assign our element type plot, without label modifications, to an object called etype. The code will then display the et object. 
+Run the following code chunk to assign our element type plot, without label modifications, to an object called et. The code will then display the et object. 
 
 ```{r}
 et <- ggplot(data=periodicTable) + geom_bar(mapping=aes(x=type)) + labs(x="Element Type", y="Number of Elements", title="Numbers of Elements by Type")
@@ -210,9 +211,16 @@ Add a new chunk by clicking the *Insert Chunk* button (top of the window on the 
 ggplot(data=periodicTable) + geom_bar(mapping=aes(x=phase)) + xlab("Element Phase") + ylab("Number of Elements")
 ```
 
+## NA omit for this graph
+
+# Exercise 8
+
+Can we get them to a point where they have a graph that is reproducible & reusable?
 
 # References
 
+Consider adding citation management?
+cite the packages - writebib
 More information can always be found in the help!
 ggplot2 reference: https://ggplot2.tidyverse.org/reference/
 ggplot2: Elegant Graphics for Data Analysis
