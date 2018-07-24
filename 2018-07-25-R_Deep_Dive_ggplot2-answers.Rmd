@@ -1,0 +1,222 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# About R Notebooks
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+
+# Setup
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk (green arrow in the top right) or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. This set of commands downlaods, installs and attaches packages we will need for this lesson. If you get a message asking to restart R, click Yes. If you get asked to recompile anything from a source binary, type Yes in the console.
+
+```{r setup}
+install.packages("tidyverse")
+install.packages("caTools")
+install.packages("bitops")
+install.packages("ggplot2")
+install.packages("PeriodicTable")
+library("tidyverse")
+library("caTools")
+library("bitops")
+library("ggplot2")
+library("PeriodicTable")
+```
+
+We will be working with a dataset about the periodic table. Information and documentation about this dataset can be found here: https://cran.r-project.org/package=PeriodicTable
+
+Run the code chunk below to load this dataset into the R environment and assign it to an object named "pt" (this is to cut down on typing later on, and is also a good to remember when writing a script).
+
+```{r load_dataset}
+data("periodicTable")
+```
+
+You should now see "periodicTable" in the Environment tab on the right side of your RStudio window.
+
+
+# Simple Scatter Plot
+
+There's lots of data that we can play with here. Let's start by making a simple plot of atomic mass versus atomic number to check the integrity of our data. What should this plot look like? Run the code below to generate a graph.
+
+```{r plot_for_data_integrity}
+ggplot(data=periodicTable, aes(x=numb,y=mass)) + geom_point()
+```
+
+This is an example of the most basic of ggplots. It has three key elements:
+1. "data=": the data you are plotting (usually the name of your data frame in your environment)
+2. "aes()": these are the aesthetic mappings for the plot - how are we visually representing the data variables. The basic ones used here are:
+- what data to plot on the x axis
+- what data to plot on the y axis
+3. An additional layer (signified by the + symbol) to describe what the plotted data should look like using the geom designation. 
+
+In this case, we are using the periodicTable data frame, and plotting numb on x and mass on y. We are specifiying the data be represented as individual points.
+
+
+## Exercise 1 - Finding A Pattern
+
+Make a scatter plot of density (y axis) versus atomic mass (x axis). Plot the data as points.
+Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*.
+
+```{r finding_a_pattern}
+ggplot(data=periodicTable,aes(x=mass,y=density)) + geom_point()
+```
+
+
+# Exercise 2 - Adding Color
+
+We can see from Exercise 1 the periodicity behind the periodic table :) We can use color to further pick out the changes from the table by coloring the points according to what period they are in. We can do this by specifying an additional aesthetic using "aes()".
+
+Recreate your graph from above, but add the following to the main plot aesthetics, after the x and y specification:
+color=period
+
+Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*.
+
+```{r adding_color}
+ggplot(data=periodicTable,aes(x=mass,y=density,color=period)) + geom_point()
+```
+
+This shows us the variation, but it would be nicer to have the periods as discrete colors and not a gradient. The reason it plotted period as a gradient is because in the data frame, period is an integer. We want period to be a categorical value, or a factor, in this case. This can be done by changing color=period to color=factor(period). 
+
+Make this modification and replot. (Watch your parenthesis!)
+
+Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*.
+
+```{r}
+ggplot(data=periodicTable,aes(x=mass,y=density,color=factor(period))) + geom_point()
+```
+
+Alternately you can change the data type for that column directly in the data set with:
+
+```{r eval=F, echo=T}
+periodicTable$period <- factor(periodicTable$period)
+```
+
+However, if you're not sure you want to permanently change a data type, just modify it in the ggplot expression.
+
+
+# Exercise 3 - Adding a Fit
+
+Let's go back to our original graph of mass versus numb:
+
+```{r plot_for_data_integrity_2}
+ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point()
+```
+
+We want to add a linear fit to this graph. We can do this by adding a layer of geom_smooth() and specifying the model we want to model with. 
+
+```{r layered_geoms_lm}
+ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point() + geom_smooth(method="lm")
+```
+
+It might be useful to display the parameters of the fitted line on the graph. How can we do that?
+Although the plot is calculated by ggplot, we need to do the calculation for the fit ouside of ggplot in order to get the exact numbers. Then we can add them to the plot.
+
+The following code runs a simple linear model approximation on our data ("lm"), stores it in an object called 'mass_correlation', and displays the slope and intercept values of the line we generated above. Run the code below. Do the numbers make sense?
+
+```{r generate_correlation_values}
+mass_correlation <- lm(mass ~ numb, data=periodicTable)
+coef(summary(mass_correlation))
+```
+
+We can pull out the specific correlation values using the following indices:
+
+```{r display_correlation_values}
+mass_correlation$coefficients[1]
+mass_correlation$coefficients[2]
+```
+
+Since we are focusing on plotting and not on statistics, let's figure out how to get this on our plot. Believe it or not this is not as straightforward as one might think.
+
+
+                                       
+```{r}
+ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point() + geom_smooth(method="lm") + annotate("text", x=5, y=5, label=mass_correlation$coefficients[1])
+```
+
+
+# Exercise 4 - Other Types of Visualizations
+
+We have a number of different variables we can look at. Let's make a bar chart to count how many elements there are of each type. 
+
+```{r element_type_histogram}
+ggplot(data=periodicTable) + geom_bar(mapping=aes(x=type))
+```
+
+You can pop out the graph into a separate window to de-smush the x-axis by clicking the small square icon (next to the arrows) in the top right of the graph window.
+
+
+# Exercise 5 - Customizing Axes
+
+Let's add some axes titles and a chart title to our type plot from Exercise 4. We can add a layer of labels using the following:
++ labs(x = "X Axis Label", y = "Y Axis Label", title = "Plot Title")
+
+Recreate the graph from Exercise 4 and label the X-axis "Element Type", Y-axis "Number of Elements", and the plot title "Numbers of Elements by Type". Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*.
+
+```{r label_customization}
+ggplot(data=periodicTable) + geom_bar(mapping=aes(x=type)) + labs(x="Element Type", y="Number of Elements", title="Numbers of Elements by Type")
+```
+
+What would make this plot look a little better?
+
+We can rotate the X-axis label text using a theme() layer. The theme() layer is where all the non-content (i.e. non-data) elements of our graphs live. There are tons of options for themes (use help -> theme), and also many pre-defined themes. 
+
+To make our text a little easier to read, add the following layer to the graph:
++ theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
+The 'element_text' command will change the 'angle', 'hjust' (horizontal justification/position) and 'vjust' (vertical justification/position) for the text of the X axis element (axis.text.x).
+
+Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*.
+
+```{r rotated_x_axis_labels}
+ggplot(data=periodicTable) + geom_bar(mapping=aes(x=type)) + labs(x="Element Type", y="Number of Elements", title="Numbers of Elements by Type") + theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
+```
+
+# Exercise 6 - Assigning a Plot to an Object for Reuse
+
+Let's say you want to experiment with a few different label types, but do not want to have to re-type the entire ggplot command every time you make your graph. At any point, with any number of layers, a ggplot can be assigned to an object, and that object can then be called and modified with further layers.
+
+Run the following code chunk to assign our element type plot, without label modifications, to an object called etype. The code will then display the et object. 
+
+```{r}
+et <- ggplot(data=periodicTable) + geom_bar(mapping=aes(x=type)) + labs(x="Element Type", y="Number of Elements", title="Numbers of Elements by Type")
+et
+```
+
+Now, if we want to add a theme layer to our base et plot, we can simply run:
+et + theme()
+
+Recreate our element type plot using the et object, but rotate the X axis text 45 degrees. Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*.
+
+```{r}
+et + theme(axis.text.x=element_text(angle=45,hjust=1,vjust=0.5))
+```
+
+Challenge: see if you can get the text to line up just below the X axis! What element of element_text do you need to change?
+
+You can see now that a new object, et, is available in the Global Environment, and you can inspect the additional plotting parameters that are stored in there. Why is this important? You may have a situation where you will be working with the same basic plot type over and over again - this gives you a programmatic way to modify aspects of the graph without retyping (or copy/pasting) the entire command. In general, for reproducible analysis, using objects is highly recommended. 
+
+# Exercise 7 - How Many Phases?
+
+Based on what we've done so far, create a bar plot that shows how many elements there are of each phase. Label with an appropriate title and appropriate axes names.
+
+Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*.
+
+```{r how_many_phases}
+ggplot(data=periodicTable) + geom_bar(mapping=aes(x=phase)) + xlab("Element Phase") + ylab("Number of Elements")
+```
+
+
+# References
+
+More information can always be found in the help!
+ggplot2 reference: https://ggplot2.tidyverse.org/reference/
+ggplot2: Elegant Graphics for Data Analysis
+R for Data Science, Chapter 3: Data Visualization - http://r4ds.had.co.nz/data-visualisation.html
+ggplot2 Google Group: https://groups.google.com/forum/#!forum/ggplot2
+ggplot2 cheatsheet (2016): https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf
+
