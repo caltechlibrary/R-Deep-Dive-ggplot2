@@ -7,13 +7,16 @@ output: html_notebook
 
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. In R Markdown documents, code is embedded in chunks, marked off by three back ticks and then the designation {r}. You can add additional detail about the chunk after the 'r', i.e. setup, information about the calculation, etc. You can also specify if you want the code itself to be included in any output document (the 'echo' option), and if you want any displayed results to be included (the 'eval' option). By default both options are set to true, so both code and output will be included in any output. We will use code chunks throughout this document for examples, and you will also create your own code chunks.
 
+
 ## How to run a code chunk
 
 To execute a code chunk, click the *Run* button within the chunk (green arrow in the top right), or put your cursor inside the code chunk grey window and press *Cmd+Shift+Enter*.
 
+
 ## Document organization using Markdown
 
 You'll also notice that sections are marked off by hashmarks - #. This provides formatting when publishing this document as a PDF, slideshow, etc. It also allows for navigation via the navigation bar at the bottom of this document window. You can navigate throughout the document using the menu.
+
 
 ## Saving and previewing the notebook
 
@@ -55,7 +58,7 @@ You should now see "periodicTable" in the Environment tab on the right side of y
 
 There's lots of data that we can play with here. Let's start by making a simple plot of atomic mass versus atomic number to check the integrity of our data. What should this plot look like? Run the code below to generate a graph.
 
-```{r plot_for_data_integrity}
+```{r mass_vs_numb}
 ggplot(data=periodicTable, aes(x=numb,y=mass)) + geom_point()
 ```
 
@@ -76,10 +79,11 @@ In this case, we are using the periodicTable dataframe, and plotting numb on x a
 
 Add a new chunk below by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Make a scatter plot of density (y axis) versus atomic mass (x axis). Plot the data as points.
 
-```{r finding_a_pattern}
+```{r exercise_3_1}
 # Remove this for the learner version.
 ggplot(data=periodicTable,aes(x=mass,y=density)) + geom_point()
 ```
+
 
 ## Exercise 3.2 - geom_point options
 
@@ -93,7 +97,7 @@ Let's replot our density graph with the following three additions to the geom_po
 
 Add a new chunk below by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Replot your expression from Exercise 1 and add the above options to the geom_point() layer, separating each option by a comma.
 
-```{r geom_point_options}
+```{r exercise_3_2}
 # Remove this for the learner version.
 ggplot(data=periodicTable,aes(x=mass,y=density)) + geom_point(colour="red",shape="triangle",na.rm=TRUE)
 
@@ -108,7 +112,7 @@ Add a new chunk by clicking the *Insert Chunk* button (top of the window on the 
 Recreate your graph from Exercise 1, but add the following to the *main data layer* aesthetics, after the x and y specification:
 color=period
 
-```{r adding_color_to_periodicity}
+```{r exercise_3_3}
 # Remove this for the learner version.
 ggplot(data=periodicTable,aes(x=mass,y=density,color=period)) + geom_point()
 ```
@@ -120,7 +124,7 @@ Our previous plot shows us the variation, but it would be more accurate to have 
 
 Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Make this modification - color=factor(period) - and replot. (Watch your parenthesis!)
 
-```{r adding_color_to_periodicity_factors}
+```{r exercise_3_4}
 # Remove this for the learner version.
 ggplot(data=periodicTable,aes(x=mass,y=density,color=factor(period))) + geom_point()
 ```
@@ -147,9 +151,9 @@ It's tricker to change it back to the original integer type, but more informatio
 
 # 4 - Adding a Fit
 
-Let's go back to our original graph of mass versus numb from the beginning of Section 3 (the plot_for_data_integrity chunk, if you are using the navigation menu at the bottom):
+Let's go back to our original graph of mass versus numb from the beginning of Section 3 (the mass_vs_numb chunk, if you are using the navigation menu at the bottom):
 
-```{r plot_for_data_integrity_2}
+```{r 4-mass_vs-numb_2}
 ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point()
 ```
 
@@ -161,7 +165,7 @@ We would like to add a linear fit to this graph. We can do this by adding a laye
 Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Add the following layer to our mass versus numb plot above:
 geom_smooth(method="lm")
 
-```{r layered_geoms_lm}
+```{r exercise_4_1}
 # Remove this for the learner version.
 ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point() + geom_smooth(method="lm")
 ```
@@ -174,14 +178,14 @@ Although the plot is calculated by ggplot, we need to do the calculation for the
 
 The following code runs a simple linear model approximation on our data ("lm"), stores it in an object called 'mass_correlation', and displays the slope and intercept values of the line we generated above. Run the code below. Do the numbers make sense?
 
-```{r generate_correlation_values}
+```{r 4_2-generate_correlation_values}
 mass_correlation <- lm(mass ~ numb, data=periodicTable)
 coef(summary(mass_correlation))
 ```
 
 We can pull out the specific correlation values using the following indices - run the code below to assign these values to objects called intercept and slope:
 
-```{r display_correlation_values}
+```{r 4_2-display_correlation_values}
 intercept <- mass_correlation$coefficients[1]
 slope <- mass_correlation$coefficients[2]
 intercept
@@ -192,13 +196,13 @@ Since we are focusing on plotting here and not on statistics, let's figure out h
 
 Run the code below to show how to add a text annotation for the intercept value to the plot:
 
-```{r add_annotation}
+```{r 4_2-add_annotation}
 ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point() + geom_smooth(method="lm") + annotate("text", x=10, y=200, label=intercept)
 ```
 
 Let's add the slope value to the graph now. Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Copy the code from the add_annotation chunk above and add a second annotate() layer to add the value for the slope. You may need to adjust your x and y values!
 
-```{r}
+```{r exercise_4_2}
 # Remove this for the learner version.
 ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point() + geom_smooth(method="lm") + annotate("text", x=10, y=200, label=intercept) + annotate("text", x=10, y=150, label=slope)
 ```
@@ -207,9 +211,9 @@ ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point() + geom_smooth(metho
 
 It would be nice to describe what those values are on the plot. There are ways to add more text (i.e. label the values for the slope and intercept). You can combine text and calculated values using the paste() command in your label, i.e.
 paste("Intercept = ", slope)
-and using this in the label option. Run the follwoing code for an example:
+and using this in the label option. Run the following code for an example:
 
-```{r label_using_paste}
+```{r 4_3-label_using_paste}
 ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point() + geom_smooth(method="lm") + annotate("text", x=20, y=200, label=paste("Intercept = ", slope))
 ```
 
@@ -239,7 +243,7 @@ Let's add some axes titles and a chart title to our element type plot. We can ad
 
 Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Recreate the graph from Exercise 4 and label the X-axis "Element Type", Y-axis "Number of Elements", and the plot title "Numbers of Elements by Type". 
 
-```{r Exercise_5_1}
+```{r exercise_5_1}
 # Remove this for the learner version.
 ggplot(data=periodicTable) + geom_bar(mapping=aes(x=type)) + labs(x="Element Type", y="Number of Elements", title="Numbers of Elements by Type")
 ```
@@ -258,7 +262,7 @@ To make our text a little easier to read, add the following layer to the graph:
 
 The 'element_text' command will change the 'angle', 'hjust' (horizontal justification/position) and 'vjust' (vertical justification/position) for the text of the X axis element (axis.text.x).
 
-```{r Exercise_5_2}
+```{r exercise_5_2}
 # Remove this for the learner version.
 ggplot(data=periodicTable) + geom_bar(mapping=aes(x=type)) + labs(x="Element Type", y="Number of Elements", title="Numbers of Elements by Type") + theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
 ```
@@ -269,7 +273,7 @@ Let's say you want to experiment with a few different label types, but do not wa
 
 Run the following code chunk to assign our element type plot, without label modifications, to an object called et. The code will then display the et object. 
 
-```{r}
+```{r 5_3-assign_plot_to_object}
 et <- ggplot(data=periodicTable) + geom_bar(mapping=aes(x=type)) + labs(x="Element Type", y="Number of Elements", title="Numbers of Elements by Type")
 et
 ```
@@ -288,35 +292,113 @@ et + theme(axis.text.x=element_text(angle=45,hjust=1,vjust=0.5))
 
 Challenge: see if you can get the text to line up just below the X axis! What element of element_text do you need to change?
 
+```{r exercise_5_3_challenge}
+# Remove this for the learner version.
+et + theme(axis.text.x=element_text(angle=45,hjust=1,vjust=1))
+```
+
 
 # Exercise 5.4 - How Many Phases?
 
-Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Based on what we've done so far, create a bar plot that shows how many elements there are of each phase. Label with an appropriate title and appropriate axes names. As a bonus, omit the NA data.
+Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Based on what we've done so far, create a bar plot that shows how many elements there are of each phase. Label with an appropriate title and appropriate axes names.
 
-```{r exercise5_4}
+```{r exercise_5_4}
 # Remove this for the learner version.
-ggplot(data=periodicTable) + geom_bar(mapping=aes(x=phase)) + xlab("Element Phase") + ylab("Number of Elements")
+ggplot(data=periodicTable) + geom_bar(mapping=aes(x=phase)) + labs(x="Element Phase", y="Number of Elements", title="Numbers of Elements by Phase")
 ```
 
-Can we get them to a point where they have a graph that is reproducible & reusable?
 
-# 7 - Three-Dimensional Plots: Periodic Table Trends
+# 6 - Three-Dimensional Plots: Periodic Table Trends
 
 We know that there are trends that we can see in the periodic table. This is an example of three-dimensional data. We have the two dimensions of the table - row and column - and our third dimension is the property that varies with them. Examples of this variance can be seen in ionic radius, electronegativity, etc.
 
 Let's make a plot of the periodic table that will show some of these trends. Run the code below to create a plot of the periodic table showing variance of electronegativiy with table position. The main layer creates the table, with X being the column and Y being the row. One type of 3D plot is geom_tile, and the aesthetic that we tell it to fill with is the Eneg (electronegativity) value (the "z" direction). So we should expect to see a color variance (what type of vector is Eneg?) with position in X and Y.
 
-```{r}
+```{r 6-electronegativity_map}
 ggplot(data=periodicTable,aes(x=col,y=row)) + geom_tile(aes(fill=Eneg))
 ```
 
+
+## Exercise 6.1 - Manipulating Axes
+
 So this looks close - what do we need to do to fix this?
 
-Answers: flip the row axis, add axis marks for rows and columns.
+Let's start by flipping the Y-axis. Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Add the following line:
++ scale_y_reverse
 
-```{r}
-ggplot(data=periodicTable,aes(x=col,y=row)) + geom_tile(aes(fill=Eneg)) + scale_y_reverse(breaks=seq(1,10,1)) + scale_x_continuous(breaks=c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18))
+```{r exercise_6_1}
+# Remove this for the learner version.
+ggplot(data=periodicTable,aes(x=col,y=row)) + geom_tile(aes(fill=Eneg)) + scale_y_reverse()
 ```
+
+Looks better!
+
+
+# Exercise 6.2 - Customizing Ticks and Labels 1
+
+We could see things a little better if we had a better scale on the X and Y. Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Copy your code from the previous exercise and add the following line to modify the X axis:
++ scale_x_continuous(breaks=seq(1,18,1))
+
+```{r exercise_6_2}
+# Remove this for the learner version.
+ggplot(data=periodicTable,aes(x=col,y=row)) + geom_tile(aes(fill=Eneg)) + scale_y_reverse() + scale_x_continuous(breaks=seq(1,18,1))
+```
+
+
+# Exercise 6.3 - Customizing Ticks and Labels 2
+
+How can we do the same thing for the Y axis? Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. What option can we add to scale_y_reverse() to get the row numbers listed individually?
+
+```{r exercise_6_3}
+# Remove this for the learner version.
+ggplot(data=periodicTable,aes(x=col,y=row)) + geom_tile(aes(fill=Eneg)) + scale_y_reverse(breaks=seq(1,10,1)) + scale_x_continuous(breaks=seq(1,18,1)) 
+```
+
+
+# Exercise 6.4 - Adding Axis Titles and Labels
+
+Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Copy your plot from the previous exercise. Let's do the following:
+1. Change the X and Y axis lables to something clearer, and add a title (see exercise 5.4 for help).
+2. Tell ggplot to ignore the row with the missing data (this is the initial row with numb = 0) - see Exercise 3.2 for help. In which layer do you think the expression should go?
+3. Add a title for the legend that's a bit more descriptive than "Eneg" by adding the following layer:
++ scale_fill_continuous(name="Electronegativity")
+
+```{r exercise_6_4}
+# Remove this for the learner version.
+ggplot(data=periodicTable,aes(x=col,y=row)) + geom_tile(aes(fill=Eneg), na.rm=TRUE) + scale_y_reverse(breaks=seq(1,10,1)) + scale_x_continuous(breaks=seq(1,18,1)) + scale_fill_continuous(name="Electronegativity") + labs(x="Column", y="Row", title="Electronegativity Across the Periodic Table")
+```
+
+the scale_fill_continuous() layer is how you customize the legend and colour for continuous data - in this case, our electronegativity values. There are different options if you have manually assigned or discrete data - see [http://www.cookbook-r.com/Graphs/Legends_(ggplot2)/](here) for more info on how to customize legend colors and text.
+
+
+# Exercise 6.5 - Exporting a plot
+
+Let's make one more plot based on the periodic table. Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Copy your plot from Exercise 6.4, and choose another continuous numberic variable to plot. Some choices are:
+
+- mass - Atomic masses
+- rcov - Covalent radii
+- rvdw - Van der Waals radii
+- rion - Ionic radii
+- IP - First ionization potential
+- density
+- melting - Melting points
+- boiling - Boiling points
+- C - Heat capacities
+
+Customize the axes and title accordingly.
+
+```{r exercise_6_5}
+# Remove this for the learner version.
+ggplot(data=periodicTable,aes(x=col,y=row)) + geom_tile(aes(fill=rion), na.rm=TRUE) + scale_y_reverse(breaks=seq(1,10,1)) + scale_x_continuous(breaks=seq(1,18,1)) + scale_fill_continuous(name="Ionic Radius") + labs(x="Column", y="Row", title="Ionic Radius Across the Periodic Table")
+```
+
+Once you are happy with your plot, you can save it using the ggsave() command. There are other ways that offer more options, but this is one of the simplest and most common. It defaults to saving the last plot that was created. Run the following code to save your last plot to a jpeg file in your working directory:
+
+```{r 6_5-ggsave_plot}
+ggsave("ptplot.jpeg")
+```
+
+By default ggsave identifies the file type (or "device") based on the filename extension. You can specify a number of different file types by specifying the file type extension in your filename - i.e. ptplot.tiff, ptplot.pdf, etc. You can also specify width, height, and units of measure. More detail can be found on the [https://ggplot2.tidyverse.org/reference/ggsave.html](ggsave reference page).
 
 
 # Acknowledgements
