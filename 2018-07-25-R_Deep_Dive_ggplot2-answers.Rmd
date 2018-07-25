@@ -31,13 +31,13 @@ This set of commands downlaods, installs and attaches packages we will need for 
 install.packages("tidyverse")
 install.packages("caTools")
 install.packages("bitops")
-install.packages("ggplot2")
 install.packages("PeriodicTable")
+install.packages("ggplot2")
 library("tidyverse")
 library("caTools")
 library("bitops")
-library("ggplot2")
 library("PeriodicTable")
+library("ggplot2")
 ```
 
 We will be working with a dataset from the **PeriodicTable: Periodic Table of the Elements package by Julien Idé**. Information and documentation about this dataset can be found here: [https://cran.r-project.org/package=PeriodicTable](https://cran.r-project.org/package=PeriodicTable).
@@ -60,74 +60,117 @@ ggplot(data=periodicTable, aes(x=numb,y=mass)) + geom_point()
 ```
 
 This is an example of the most basic of ggplots. It has three key elements:
+
 1. "data=": the data you are plotting (usually the name of your data frame in your environment)
+
 2. "aes()": these are the aesthetic mappings for the plot - how are we visually representing the data variables. The basic ones used here are:
-- what data to plot on the x axis
-- what data to plot on the y axis
++ what data to plot on the x axis (x=vector_in_dataframe)
++ what data to plot on the y axis (y=vector_in_dataframe)
+
 3. An additional layer (signified by the + symbol) to describe what the plotted data should look like using the geom designation. 
 
-In this case, we are using the periodicTable data frame, and plotting numb on x and mass on y. We are specifiying the data be represented as individual points.
+In this case, we are using the periodicTable dataframe, and plotting numb on x and mass on y. We are specifiying the data be represented as individual points.
 
 
-## Exercise 1 - Finding A Pattern
+## Exercise 3.1 - Finding A Pattern
 
-Make a scatter plot of density (y axis) versus atomic mass (x axis). Plot the data as points.
-Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*.
+Add a new chunk below by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Make a scatter plot of density (y axis) versus atomic mass (x axis). Plot the data as points.
 
 ```{r finding_a_pattern}
+# Remove this for the learner version.
 ggplot(data=periodicTable,aes(x=mass,y=density)) + geom_point()
 ```
 
+## Exercise 3.2 - geom_point options
 
-# Exercise 2 - Adding Color
+There are many options and aesthetics that you can add to a simple scatter plot using geom_point. An extensive overview can be found in the [https://ggplot2.tidyverse.org/reference/geom_point.html](online ggplot2 reference).
 
-We can see from Exercise 1 the periodicity behind the periodic table :) We can use color to further pick out the changes from the table by coloring the points according to what period they are in. We can do this by specifying an additional aesthetic using "aes()".
+Let's replot our density graph with the following three additions to the geom_point layer:
+
+1. Change the colour to red: colour = "red"
+2. Change the shape to triangles: shape = "triangle"
+3. Remove the missing values: na.rm = TRUE
+
+Add a new chunk below by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Replot your expression from Exercise 1 and add the above options to the geom_point() layer, separating each option by a comma.
+
+```{r geom_point_options}
+# Remove this for the learner version.
+ggplot(data=periodicTable,aes(x=mass,y=density)) + geom_point(colour="red",shape="triangle",na.rm=TRUE)
+
+```
+
+
+## Exercise 3.3 - Using colour to elucidate patterns
+
+We can see from the previous plots some of the periodicity behind the periodic table :) We've seen that we can change the color of an entire plot. Can we use colour to further pick out the changes from the table by colouring the points according to what period they are in? We can do this by specifying an additional aesthetic in the main data layer using "aes()".
 
 Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*.
-Recreate your graph from above, but add the following to the main plot aesthetics, after the x and y specification:
+Recreate your graph from Exercise 1, but add the following to the *main data layer* aesthetics, after the x and y specification:
 color=period
 
-```{r adding_color}
+```{r adding_color_to_periodicity}
+# Remove this for the learner version.
 ggplot(data=periodicTable,aes(x=mass,y=density,color=period)) + geom_point()
 ```
 
-This shows us the variation, but it would be more accurate to have the periods as discrete colors and not a gradient. The reason it plotted period as a gradient is because in the data frame, period is an integer. ggplot treats number and integer vectors as continuous variables by default - hence it uses a gradient color scheme. In this case, we want period to be a categorical value, or a factor. This can be done by changing color=period to color=factor(period).
 
-Make this modification and replot. (Watch your parenthesis!)
+## Exercise 3.4 - Adding Color by Factor
 
-Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*.
+Our previous plot shows us the variation, but it would be more accurate to have the periods as discrete colors and not a gradient. The reason it plotted period as a gradient is because in the data frame, period is an integer. ggplot treats number and integer vectors as continuous variables by default - hence it uses a gradient color scheme. In this case, we want period to be a categorical value, or a factor. This can be done by changing color=period to color=factor(period).
 
-```{r}
+Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Make this modification - color=factor(period) - and replot. (Watch your parenthesis!)
+
+```{r adding_color_to_periodicity_factors}
+# Remove this for the learner version.
 ggplot(data=periodicTable,aes(x=mass,y=density,color=factor(period))) + geom_point()
 ```
 
-Alternately, to get the same effect, you can change the data type for that column directly in the data frame. You can do that with the following command:
+Alternately, to get the same effect, you can change the data type for that column directly in the data frame. You can do that with the following command (you don't need to run this):
 
-```{r eval=F, echo=T}
+```{r int_to_factor, eval=F, echo=T}
 periodicTable$period <- factor(periodicTable$period)
 ```
 
+Then, when you add color=period, ggplot will automatically plot it as a factor.
+
 However, if you're not sure you want to permanently change a data type, just modify it in the ggplot expression.
-## Can you change it back to an integer? 
+
+You can change the type back to numberic with the following (also, you don't need to run this): 
+
+```{r factor_to_numeric, eval=F, echo=T}
+periodicTable$period <- as.numeric(periodicTable$period)
+```
+
+It's tricker to change it back to the original integer type, but more information on that can be found here:
+[https://stackoverflow.com/questions/3418128/how-to-convert-a-factor-to-integer-numeric-without-loss-of-information](https://stackoverflow.com/questions/3418128/how-to-convert-a-factor-to-integer-numeric-without-loss-of-information)
 
 
-# Exercise 3 - Adding a Fit
+# 4 - Adding a Fit
 
-Let's go back to our original graph of mass versus numb:
+Let's go back to our original graph of mass versus numb from the beginning of Section 3 (the plot_for_data_integrity chunk, if you are using the navigation menu at the bottom):
 
 ```{r plot_for_data_integrity_2}
 ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point()
 ```
 
-We want to add a linear fit to this graph. We can do this by adding a layer of geom_smooth() and specifying the model we want to model with.
-# add info on method
+We would like to add a linear fit to this graph. We can do this by adding a layer of geom_smooth() and specifying the model we want to use. There are many options that can be used for a fit - more info on geom_smooth() can be found here: [https://ggplot2.tidyverse.org/reference/geom_smooth.html](https://ggplot2.tidyverse.org/reference/geom_smooth.html).
+
+
+## Exercise 4.1 - Adding a linear fit
+
+Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Add the following layer to our mass versus numb plot above:
+geom_smooth(method="lm")
 
 ```{r layered_geoms_lm}
+# Remove this for the learner version.
 ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point() + geom_smooth(method="lm")
 ```
 
+
+## Exercise 4.2 - Adding linear fit parameters to the plot
+
 It might be useful to display the parameters, like slope and intercept, of the fitted line on the graph. How can we do that?
-Although the plot is calculated by ggplot, we need to do the calculation for the fit outside of ggplot in order to get the exact numbers. Then we can add them to the plot.
+Although the plot is calculated by ggplot, we need to do the calculation for the fit parameters outside of ggplot in order to get the exact numbers. Then we can add them to the plot.
 
 The following code runs a simple linear model approximation on our data ("lm"), stores it in an object called 'mass_correlation', and displays the slope and intercept values of the line we generated above. Run the code below. Do the numbers make sense?
 
@@ -136,41 +179,66 @@ mass_correlation <- lm(mass ~ numb, data=periodicTable)
 coef(summary(mass_correlation))
 ```
 
-We can pull out the specific correlation values using the following indices:
+We can pull out the specific correlation values using the following indices - run the code below to assign these values to objects called intercept and slope:
 
 ```{r display_correlation_values}
-mass_correlation$coefficients[1]
-mass_correlation$coefficients[2]
+intercept <- mass_correlation$coefficients[1]
+slope <- mass_correlation$coefficients[2]
+intercept
+slope
 ```
 
-Since we are focusing on plotting and not on statistics, let's figure out how to get this on our plot. Believe it or not this is not as straightforward as one might think.
+Since we are focusing on plotting here and not on statistics, let's figure out how to get this on our plot. Believe it or not this is not as straightforward as one might think. Text is added to plots using an annotate() layer. More info on annotate() can be found here: [https://ggplot2.tidyverse.org/reference/annotate.html](https://ggplot2.tidyverse.org/reference/annotate.html). The options for annotate() include the type of annotation (in this case "text"), the position on the graph (x and y), and the value (this can be a reference to a value in a vector, dataframe or list).
 
+Run the code below to show how to add a text annotation for the intercept value to the plot:
+
+```{r add_annotation}
+ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point() + geom_smooth(method="lm") + annotate("text", x=10, y=200, label=intercept)
+```
+
+Let's add the slope value to the graph now. Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Copy the code from the add_annotation chunk above and add a second annotate() layer to add the value for the slope. You may need to adjust your x and y values!
 
 ```{r}
-ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point() + geom_smooth(method="lm") + annotate("text", x=5, y=5, label=mass_correlation$coefficients[1])
+# Remove this for the learner version.
+ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point() + geom_smooth(method="lm") + annotate("text", x=10, y=200, label=intercept) + annotate("text", x=10, y=150, label=slope)
+```
+
+## Exercise 4.3 - Customizing annotations
+
+It would be nice to describe what those values are on the plot. There are ways to add more text (i.e. label the values for the slope and intercept). You can combine text and calculated values using the paste() command in your label, i.e.
+paste("Intercept = ", slope)
+and using this in the label option. Run the follwoing code for an example:
+
+```{r label_using_paste}
+ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point() + geom_smooth(method="lm") + annotate("text", x=20, y=200, label=paste("Intercept = ", slope))
+```
+
+Let's add the equation for the line to the graph. Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Copy the code from the label_using_paste chunk above and change the annotate layer so the equation y = slope*x + intercept shows up on the graph.
+
+```{r exercise_4_3}
+ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point() + geom_smooth(method="lm") + annotate("text", x=30, y=250, label=paste("y = ", slope, "x +", intercept))
 ```
 
 
-# Exercise 4 - Other Types of Visualizations
+# 5 - Bar Charts
 
 We have a number of different variables we can look at. Let's make a bar chart to count how many elements there are of each type. 
 
-```{r element_type_histogram}
+```{r bar_chart}
 ggplot(data=periodicTable) + geom_bar(mapping=aes(x=type))
 ```
 
 You can pop out the graph into a separate window to de-smush the x-axis by clicking the small square icon (next to the arrows) in the top right of the graph window.
 
 
-# Exercise 5 - Customizing Axes
+# Exercise 5.1 - Customizing Axes
 
 Let's add some axes titles and a chart title to our type plot from Exercise 4. We can add a layer of labels using the following:
 + labs(x = "X Axis Label", y = "Y Axis Label", title = "Plot Title")
 
-Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*.
-Recreate the graph from Exercise 4 and label the X-axis "Element Type", Y-axis "Number of Elements", and the plot title "Numbers of Elements by Type". 
+Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Recreate the graph from Exercise 4 and label the X-axis "Element Type", Y-axis "Number of Elements", and the plot title "Numbers of Elements by Type". 
 
-```{r label_customization}
+```{r exercise_5_1}
 ggplot(data=periodicTable) + geom_bar(mapping=aes(x=type)) + labs(x="Element Type", y="Number of Elements", title="Numbers of Elements by Type")
 ```
 
@@ -273,4 +341,4 @@ ggplot2: Elegant Graphics for Data Analysis
 R for Data Science, Chapter 3: Data Visualization - http://r4ds.had.co.nz/data-visualisation.html
 ggplot2 Google Group: https://groups.google.com/forum/#!forum/ggplot2
 ggplot2 cheatsheet (2016): https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf
-
+https://www.computerworld.com/article/2935394/business-intelligence/my-ggplot2-cheat-sheet-search-by-task.html
