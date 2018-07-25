@@ -3,20 +3,31 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-# About R Notebooks
+# 1 - Introduction - About R Notebooks
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. In R Markdown documents, code is embedded in chunks, marked off by three back ticks and then the designation {r}. You can add additional detail about the chunk after the 'r', i.e. setup, information about the calculation, etc. You can also specify if you want the code itself to be included in any output document (the 'echo' option), and if you want any displayed results to be included (the 'eval' option). By default both options are set to true, so both code and output will be included in any output. We will use code chunks throughout this document for examples, and you will also create your own code chunks.
 
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+## How to run a code chunk
+
+To execute a code chunk, click the *Run* button within the chunk (green arrow in the top right), or put your cursor inside the code chunk grey window and press *Cmd+Shift+Enter*.
+
+## Document organization using Markdown
+
+You'll also notice that sections are marked off by hashmarks - #. This provides formatting when publishing this document as a PDF, slideshow, etc. It also allows for navigation via the navigation bar at the bottom of this document window. You can navigate throughout the document using the menu.
+
+## Saving and previewing the notebook
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it. Click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file - this will appear in the right hand side window in the *Viewer* tab. The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
 
 
-# Setup
+# 2 - Setup
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+This set of commands downlaods, installs and attaches packages we will need for this lesson. If you get a message asking to restart R, click Yes. If you get asked to recompile anything from a source binary, type Yes in the console. Run the code in this code chunk by following the directions given in the *Introduction - How to run a code chunk* section.
 
-Try executing this chunk by clicking the *Run* button within the chunk (green arrow in the top right) or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. This set of commands downlaods, installs and attaches packages we will need for this lesson. If you get a message asking to restart R, click Yes. If you get asked to recompile anything from a source binary, type Yes in the console.
+```{r setup, eval=F, echo=T}
+# You can include comments in code chunks by using a hash at the beginning of the line.
+# For this chunk, I set eval=F so you don't get all the package loading messages cluttering up your HTML output.
 
-```{r setup}
 install.packages("tidyverse")
 install.packages("caTools")
 install.packages("bitops")
@@ -29,9 +40,9 @@ library("ggplot2")
 library("PeriodicTable")
 ```
 
-We will be working with a dataset about the periodic table. Information and documentation about this dataset can be found here: https://cran.r-project.org/package=PeriodicTable
+We will be working with a dataset from the **PeriodicTable: Periodic Table of the Elements package by Julien Idé**. Information and documentation about this dataset can be found here: [https://cran.r-project.org/package=PeriodicTable](https://cran.r-project.org/package=PeriodicTable).
 
-Run the code chunk below to load this dataset into the R environment and assign it to an object named "pt" (this is to cut down on typing later on, and is also a good to remember when writing a script).
+Run the code chunk below to load this dataset into the R environment.
 
 ```{r load_dataset}
 data("periodicTable")
@@ -40,7 +51,7 @@ data("periodicTable")
 You should now see "periodicTable" in the Environment tab on the right side of your RStudio window.
 
 
-# Simple Scatter Plot
+# 3 - Simple Scatter Plot
 
 There's lots of data that we can play with here. Let's start by making a simple plot of atomic mass versus atomic number to check the integrity of our data. What should this plot look like? Run the code below to generate a graph.
 
@@ -213,9 +224,44 @@ ggplot(data=periodicTable) + geom_bar(mapping=aes(x=phase)) + xlab("Element Phas
 
 ## NA omit for this graph
 
-# Exercise 8
+# Exercise 8 - Density Plot
+
+```{r}
+ggplot(data=periodicTable,aes(x=mass,y=rion)) + geom_density2d()
+```
+
+```{r}
+ggplot(data=periodicTable,aes(x=mass,y=rion)) + geom_bin2d()
+```
 
 Can we get them to a point where they have a graph that is reproducible & reusable?
+
+# Three-Dimensional Plots: Periodic Table Trends
+
+We know that there are trends that we can see in the periodic table. This is an example of three-dimensional data. We have the two dimensions of the table - row and column - and our third dimension is the property that varies with them. Examples of this variance can be seen in ionic radius, electronegativity, etc.
+
+Let's make a plot of the periodic table that will show some of these trends. Run the code below to create a plot of the periodic table showing variance of electronegativiy with table position. The main layer creates the table, with X being the column and Y being the row. One type of 3D plot is geom_tile, and the aesthetic that we tell it to fill with is the Eneg (electronegativity) value (the "z" direction). So we should expect to see a color variance (what type of vector is Eneg?) with position in X and Y.
+
+```{r}
+ggplot(data=periodicTable,aes(x=col,y=row)) + geom_tile(aes(fill=Eneg))
+```
+
+So this looks close - what do we need to do to fix this?
+
+Answers: flip the row axis, add axis marks for rows and columns.
+
+```{r}
+ggplot(data=periodicTable,aes(x=col,y=row)) + geom_tile(aes(fill=Eneg)) + scale_y_reverse(breaks=seq(1,10,1)) + scale_x_continuous(breaks=c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18))
+```
+
+# When were most of the elements discovered?
+
+Histogram of years
+
+```{r}
+ggplot(data=periodicTable,aes(x=year)) + geom_histogram(binwidth = 1) + scale_x_continuous(breaks=seq(1200,2050,50))
+```
+
 
 # References
 
