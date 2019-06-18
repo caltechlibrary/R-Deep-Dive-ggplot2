@@ -125,7 +125,8 @@ additional aesthetic in the main data layer using `aes()`.
 
 Add a new chunk by clicking the *Insert Chunk* button (top of the window on the 
 toolbar) or by pressing *Cmd+Option+I*.
-Recreate your graph from Exercise 1, but add the following to the *main data layer* aesthetics, after the x and y specification:
+Recreate your graph from Exercise 1, but add the following to the *main data layer* aesthetics, 
+after the x and y specification:
 `color=period`
 
 Insert chunk here :)
@@ -266,7 +267,8 @@ We have a number of different variables we can look at. Let's make a bar chart t
 ggplot(data=periodicTable) + geom_bar(mapping=aes(x=type))
 ```
 
-You can pop out the graph into a separate window to de-smush the x-axis by clicking the small square icon (next to the arrows) in the top right of the graph window.
+You can pop out the graph into a separate window to de-smush the x-axis by clicking the small square 
+icon (next to the arrows) in the top right of the graph window.
 
 
 ## Exercise 5.1 - Customizing Axes Text
@@ -286,50 +288,79 @@ Insert chunk here :)
 
 What would make this plot look a little better?
 
-We can rotate the X-axis label text using a theme() layer. The theme() layer is where all the non-content (i.e. non-data) elements of our graphs live. There are tons of options for themes (use help -> theme), and also many pre-defined themes. 
+We can rotate the X-axis label text using a `theme()` layer. This layer is where all the non-content 
+(i.e. non-data) elements of ggplot graphs live. There are tons of options for themes (use help -> 
+theme), and also many pre-defined themes. 
 
-Let's replot our graph and make it a little easier to read. Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*.
+Let's replot our graph and make it a little easier to read. Add a new chunk by clicking the *Insert 
+Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*.
 To make our text a little easier to read, add the following layer to the graph:
+`+ theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))`
 
-+ theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
+The `element_text` command will change the `angle`, `hjust` (horizontal justification/position) and 
+`vjust` (vertical justification/position) for the text of the X axis element (`axis.text.x`).
 
-The 'element_text' command will change the 'angle', 'hjust' (horizontal justification/position) and 'vjust' (vertical justification/position) for the text of the X axis element (axis.text.x).
+Insert chunk here :)
 
 
 ## Exercise 5.3 - Assigning a Plot to an Object for Reuse
 
-Let's say you want to experiment with a few different label types, but do not want to have to re-type the entire ggplot command every time you make your graph. At any point, with any number of layers, a ggplot can be assigned to an object, and that object can then be called and modified with further layers.
+Let's say you want to experiment with a few different label types, but do not want to have to re-type 
+the entire ggplot command every time you make your graph. At any point, with any number of layers, a 
+ggplot can be assigned to an object, and that object can then be called and modified with further 
+layers.
 
-Run the following code chunk to assign our element type plot, without label modifications, to an object called et. The code will then display the et object. 
+Run the following code chunk to assign our element type plot, without label modifications, to an 
+object called `et`. The code will then display the `et` object. 
 
-```{r 5_3-assign_plot_to_object}
+```{r section_5_3-assign_plot_to_object}
 et <- ggplot(data=periodicTable) + geom_bar(mapping=aes(x=type)) + labs(x="Element Type", y="Number of Elements", title="Numbers of Elements by Type")
 et
 ```
 
-You can see now that a new object, et, is available in the Global Environment, and you can inspect the additional plotting parameters that are stored in there. Why is this important? You may have a situation where you will be working with the same basic plot type over and over again - this gives you a programmatic way to modify aspects of the graph without retyping (or copy/pasting) the entire command. In general, for reproducible analysis, using objects is highly recommended. 
+You can see now that a new object, et, is available in the Global Environment, and you can inspect 
+the additional plotting parameters that are stored in there. Why is this important? You may have a 
+situation where you will be working with the same basic plot type over and over again - this gives 
+you a programmatic way to modify aspects of the graph without retyping (or copy/pasting) the entire 
+command. In general, for reproducible analysis, using objects is highly recommended. 
 
 Now, if we want to add a theme layer to our base et plot, we can simply run:
-et + theme()
+`et + theme()`
 
-Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Recreate our element type plot using the et object, but rotate the X axis text 45 degrees. 
+Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by 
+pressing *Cmd+Option+I*. Recreate our element type plot using the et object, but rotate the X axis 
+text 45 degrees. 
+
+Insert chunk here :)
+
+Challenge: see if you can get the text to line up just below the X axis! What element 
+of `element_text` do you need to change?
+
+Insert chunk here :)
 
 
-Challenge: see if you can get the text to line up just below the X axis! What element of element_text do you need to change?
+## Exercise 5.4 - How Many Phases?
 
+Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by 
+pressing *Cmd+Option+I*. Based on what we've done so far, create a bar plot that shows how many 
+elements there are of each phase. Label with an appropriate title and appropriate axes names.
 
-
-# Exercise 5.4 - How Many Phases?
-
-Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Based on what we've done so far, create a bar plot that shows how many elements there are of each phase. Label with an appropriate title and appropriate axes names.
-
+Insert chunk here :)
 
 
 # 6 - Three-Dimensional Plots: Periodic Table Trends
 
-We know that there are trends that we can see in the periodic table. This is an example of three-dimensional data. We have the two dimensions of the table - row and column - and our third dimension is the property that varies with them. Examples of this variance can be seen in ionic radius, electronegativity, etc.
+We know that there are trends that we can see in the periodic table. This is an example of 
+three-dimensional data. We have the two dimensions of the periodic table - row and column - and 
+our third dimension is the property that varies with them. Examples of this variance can be 
+seen in ionic radius, electronegativity, etc.
 
-Let's make a plot of the periodic table that will show some of these trends. Run the code below to create a plot of the periodic table showing variance of electronegativiy with table position. The main layer creates the table, with X being the column and Y being the row. One type of 3D plot is geom_tile, and the aesthetic that we tell it to fill with is the Eneg (electronegativity) value (the "z" direction). So we should expect to see a color variance (what type of vector is Eneg?) with position in X and Y.
+Let's make a plot of the periodic table that will show some of these trends. Run the code below to 
+create a plot of the periodic table showing variance of electronegativiy with table position. The 
+main layer creates the table, with X being the column and Y being the row. One type of 3D plot 
+is `geom_tile`, and the aesthetic that we tell it to fill with is the Eneg (electronegativity) value 
+(the "z" direction). So we should expect to see a color variance (pop quiz: what type of vector 
+is Eneg?) with position in X and Y.
 
 ```{r 6-electronegativity_map}
 ggplot(data=periodicTable,aes(x=col,y=row)) + geom_tile(aes(fill=Eneg))
@@ -340,41 +371,57 @@ ggplot(data=periodicTable,aes(x=col,y=row)) + geom_tile(aes(fill=Eneg))
 
 So this looks close - what do we need to do to fix this?
 
-Let's start by flipping the Y-axis. Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Add the following line:
-+ scale_y_reverse
+Let's start by flipping the Y-axis. Add a new chunk by clicking the *Insert Chunk* button (top of the 
+window on the toolbar) or by pressing *Cmd+Option+I*. Add the following line:
+`+ scale_y_reverse`
 
+Insert chunk here :)
 
 Looks better!
 
 
-# Exercise 6.2 - Customizing Ticks and Labels 1
+## Exercise 6.2 - Customizing Ticks and Labels 1
 
-We could see things a little better if we had a better scale on the X and Y. Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Copy your code from the previous exercise and add the following line to modify the X axis:
-+ scale_x_continuous(breaks=seq(1,18,1))
+We could see things a little better if we had a better scale on the X and Y. Add a new chunk by 
+clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. 
+Copy your code from the previous exercise and add the following line to modify the X axis:
+`+ scale_x_continuous(breaks=seq(1,18,1))`
 
-
-
-# Exercise 6.3 - Customizing Ticks and Labels 2
-
-How can we do the same thing for the Y axis? Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. What option can we add to scale_y_reverse() to get the row numbers listed individually?
+Insert chunk here :)
 
 
+## Exercise 6.3 - Customizing Ticks and Labels 2
 
-# Exercise 6.4 - Adding Axis Titles and Labels
+How can we do the same thing for the Y axis? Add a new chunk by clicking the *Insert Chunk* button 
+(top of the window on the toolbar) or by pressing *Cmd+Option+I*. What option can we add to 
+`scale_y_reverse()` to get the row numbers listed individually?
 
-Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Copy your plot from the previous exercise. Let's do the following:
-1. Change the X and Y axis lables to something clearer, and add a title (see exercise 5.4 for help).
-2. Tell ggplot to ignore the row with the missing data (this is the initial row with numb = 0) - see Exercise 3.2 for help. In which layer do you think the expression should go?
+Insert chunk here :)
+
+
+## Exercise 6.4 - Adding Axis Titles and Labels
+
+Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by 
+pressing *Cmd+Option+I*. Copy your plot from the previous exercise. Let's do the following:
+1. Change the X and Y axis lables to something clearer, and add a title (see Exercise 5.1 for help).
+2. Tell ggplot to ignore the row with the missing data (this is the initial row with numb = 0) - see 
+Exercise 3.2 for help. In which layer do you think the expression should go?
 3. Add a title for the legend that's a bit more descriptive than "Eneg" by adding the following layer:
-+ scale_fill_continuous(name="Electronegativity")
+`+ scale_fill_continuous(name="Electronegativity")`
+
+Insert chunk here :)
+
+The `scale_fill_continuous() layer` is how you customize the legend and colour for continuous data - 
+in this case, our electronegativity values. There are different options if you have manually assigned 
+or discrete data - see [http://www.cookbook-r.com/Graphs/Legends_(ggplot2)/](here) for more info on 
+how to customize legend colors and text.
 
 
-the scale_fill_continuous() layer is how you customize the legend and colour for continuous data - in this case, our electronegativity values. There are different options if you have manually assigned or discrete data - see [http://www.cookbook-r.com/Graphs/Legends_(ggplot2)/](here) for more info on how to customize legend colors and text.
+## Exercise 6.5 - Exporting a plot
 
-
-# Exercise 6.5 - Exporting a plot
-
-Let's make one more plot based on the periodic table. Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Copy your plot from Exercise 6.4, and choose another continuous numberic variable to plot. Some choices are:
+Let's make one more plot based on the periodic table. Add a new chunk by clicking the *Insert Chunk* 
+button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Copy your plot from Exercise 
+6.4, and choose another continuous numberic variable to plot. Some choices are:
 
 - mass - Atomic masses
 - rcov - Covalent radii
@@ -388,10 +435,12 @@ Let's make one more plot based on the periodic table. Add a new chunk by clickin
 
 Customize the axes and title accordingly.
 
+Once you are happy with your plot, you can save it using the `ggsave()` command. There are other ways 
+that offer more options, but this is one of the simplest and most common. It defaults to saving the 
+last plot that was created. Run the following code to save your last plot to a jpeg file in your 
+working directory:
 
-Once you are happy with your plot, you can save it using the ggsave() command. There are other ways that offer more options, but this is one of the simplest and most common. It defaults to saving the last plot that was created. Run the following code to save your last plot to a jpeg file in your working directory:
-
-```{r 6_5-ggsave_plot}
+```{r section_6_5-ggsave_plot}
 ggsave("ptplot.jpeg")
 ```
 
@@ -400,16 +449,18 @@ By default ggsave identifies the file type (or "device") based on the filename e
 
 # Acknowledgements
 
-Gail Clement, Head of Research Services, California Institute of Technology, for inspiration and assistance with proofreading and teaching.
+Gail Clement, Head of Research Services, California Institute of Technology, for inspiration and 
+assistance with proofreading and teaching.
 
-Parts of this lesson are inspired by *Data Science in the tidyverse* by Charlotte Wickham, which is licensed under a Creative Commons Attribution 4.0 International License and based on a work at [https://github.com/rstudio/master-the-tidyverse](https://github.com/rstudio/master-the-tidyverse).
+Parts of this lesson are inspired by *Data Science in the tidyverse* by Charlotte Wickham, which is 
+licensed under a Creative Commons Attribution 4.0 International License and based on a work at [https://github.com/rstudio/master-the-tidyverse](https://github.com/rstudio/master-the-tidyverse).
 
 
 # References
 
 1. More information can always be found in the help!
 2. [https://ggplot2.tidyverse.org/reference/](Main ggplot2 reference)
-3. ggplot2: Elegant Graphics for Data Analysis, 2nd Ed., by Hadley Wickham. We are working on getting a print copy of this for the Library, but if you'd like to make your own PDF version from his GitHub repo, visit [https://github.com/hadley/ggplot2-book](https://github.com/hadley/ggplot2-book)
+3. ggplot2: Elegant Graphics for Data Analysis, 2nd Ed., by Hadley Wickham: [https://github.com/hadley/ggplot2-book](https://github.com/hadley/ggplot2-book)
 4. R for Data Science by Hadley Wickham, [http://r4ds.had.co.nz/data-visualisation.html](Chapter 3: Data Visualization)
 5. [https://groups.google.com/forum/#!forum/ggplot2](ggplot2 Google Group)
 6. ggplot2 cheatsheet (2016): [https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf)

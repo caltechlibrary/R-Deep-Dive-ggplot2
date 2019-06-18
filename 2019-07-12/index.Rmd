@@ -13,3 +13,8 @@ knitr::opts_chunk$set(echo = FALSE)
 
 Welcome to the website for the July 12, 2019 version of the "R Deep Dive with 
 ggplot2" in-person lesson.
+
+Handouts:
+R Markdown cheatsheet
+ggplot2 cheatsheet
+A periodic table :)
