@@ -219,40 +219,50 @@ as one might think. Text is added to plots using an `annotate()` layer. More
 info on `annotate()` can be found here: [https://ggplot2.tidyverse.org/reference/annotate.html](https://ggplot2.tidyverse.org/reference/annotate.html).
 
 The options for annotate() include the type of annotation (in this case 
-"text"), the position on the graph (x and y), and the value (this can be 
-a reference to a value in a vector, dataframe or list).
+"text"), the position on the graph (x and y values), and the value (this can be 
+a reference to a value in a vector, dataframe or list, indicated by `label=`).
 
 Run the code below to show how to add a text annotation for the intercept value 
 to the plot:
 
-```{r 4_2-add_annotation}
+```{r section_4_2-add_annotation}
 ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point() + geom_smooth(method="lm") + annotate("text", x=10, y=200, label=intercept)
 ```
 
-Let's add the slope value to the graph now. Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Copy the code from the add_annotation chunk above and add a second annotate() layer to add the value for the slope. You may need to adjust your x and y values!
+Let's add the slope value to the graph now. Add a new chunk by clicking the *Insert Chunk* button 
+(top of the window on the toolbar) or by pressing *Cmd+Option+I*. Copy the code from the 
+`section_4_2-add_annotation chunk` above and add a second `annotate()` layer to add the value for 
+the slope. You may need to adjust your x and y values!
+
+Insert chunk here :)
 
 
 ## Exercise 4.3 - Customizing annotations
 
 It would be nice to describe what those values are on the plot. There are ways 
 to add more text (i.e. label the values for the slope and intercept). You can 
-combine text and calculated values using the paste() command in your label, i.e.
-paste("Intercept = ", slope)
+combine text and calculated values using the `paste()` command in your label, i.e.
+`paste("Intercept = ", intercept)`
 and using this in the label option. Run the following code for an example:
 
-```{r 4_3-label_using_paste}
-ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point() + geom_smooth(method="lm") + annotate("text", x=20, y=200, label=paste("Intercept = ", slope))
+```{r section_4_3-label_using_paste}
+ggplot(data=periodicTable,aes(x=numb,y=mass)) + geom_point() + geom_smooth(method="lm") + annotate("text", x=20, y=200, label=paste("Slope = ", slope))
 ```
 
-Let's add the equation for the line to the graph. Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Copy the code from the label_using_paste chunk above and change the annotate layer so the equation y = slope*x + intercept shows up on the graph.
+Let's add the equation for the line to the graph. Add a new chunk by clicking the *Insert Chunk* 
+button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Copy the code from the 
+`section_4_3-label_using_paste` chunk above and change the annotate layer so the equation 
+y = slope*x + intercept 
+shows up on the graph.
 
+Insert chunk here :)
 
 
 # 5 - Bar Charts
 
 We have a number of different variables we can look at. Let's make a bar chart to count how many elements there are of each type. 
 
-```{r 5-bar_chart-element_types_example}
+```{r section_5-bar_chart-element_types_example}
 ggplot(data=periodicTable) + geom_bar(mapping=aes(x=type))
 ```
 
@@ -261,11 +271,15 @@ You can pop out the graph into a separate window to de-smush the x-axis by click
 
 ## Exercise 5.1 - Customizing Axes Text
 
-Let's add some axes titles and a chart title to our element type plot. We can add a layer of labels using the following:
-+ labs(x = "X Axis Label", y = "Y Axis Label", title = "Plot Title")
+Let's add some axes titles and a chart title to our element type plot. We can add a layer of labels 
+using the following:
+`+ labs(x = "X Axis Label", y = "Y Axis Label", title = "Plot Title")`
 
-Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Recreate the graph from Exercise 4 and label the X-axis "Element Type", Y-axis "Number of Elements", and the plot title "Numbers of Elements by Type". 
+Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by 
+pressing *Cmd+Option+I*. Recreate the graph from Exercise 4 and label the X-axis "Element Type", 
+Y-axis "Number of Elements", and the plot title "Numbers of Elements by Type". 
 
+Insert chunk here :)
 
 
 ## Exercise 5.2 - Customizing Axes Position
