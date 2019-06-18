@@ -25,7 +25,11 @@ summary(cars)
 Including Plots
 ---------------
 
-You can also embed plots, for example:
+You can also embed plots, for example - testing to see if code is included:
+
+``` r
+plot(pressure)
+```
 
 ![](index_files/figure-markdown_github/pressure-1.png)
 
