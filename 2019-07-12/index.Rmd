@@ -1,28 +1,15 @@
 ---
-title: "R Deep Dive - ggplot2"
+title: "R Deep Dive with ggplot2"
 author: "Donna Wrublewski"
 date: "6/18/2019"
 output: github_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## ggplot2 Deep Dive - Plotting the Periodic Table
+#R Deep Dive with ggplot2 - Plotting the Periodic Table
 
-Lesson for ggplot2 example
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example - testing to see if code is included:
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Welcome to the website for the July 12, 2019 version of the "R Deep Dive with 
+ggplot2" in-person lesson.

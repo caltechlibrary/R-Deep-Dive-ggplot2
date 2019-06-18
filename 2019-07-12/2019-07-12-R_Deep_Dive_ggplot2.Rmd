@@ -1,5 +1,5 @@
 ---
-title: "R Notebook"
+title: "R Deep Dive with ggplot2"
 Date: July 12, 2019
 output: html_notebook
 ---
@@ -52,7 +52,21 @@ Run the code chunk below to load this dataset into the R environment.
 data("periodicTable")
 ```
 
-You should now see "periodicTable" in the Environment tab on the right side of your RStudio window.
+You should now see "periodicTable" in the Environment tab on the right side of 
+your RStudio window. 
+
+Let's take a look at what's in here. Run the following code chunk to see some 
+characteristics of our data frame.
+
+```{r look_at_periodicTable_dataset}
+str(periodicTable)
+```
+
+In the Environment tab, clicking on the arrow in the blue circle will display 
+the same basic information (the "structure") bout this data frame. If we want 
+to look at all the data in a table format, click on the **name** of the data 
+frame in the Environment tab. This will open up a new object tab in the upper 
+left, next to this window.
 
 
 # 3 - Simple Scatter Plot
@@ -67,11 +81,11 @@ This is an example of the most basic of ggplots. It has three key elements:
 
 1. "data=": the data you are plotting (usually the name of your data frame in your environment)
 
-2. "aes()": these are the aesthetic mappings for the plot - how are we visually representing the data variables. The basic ones used here are:
+2. "aes()": these are the aesthetic mappings for the plot - how we are visually representing the data variables. The basic ones used here are:
 + what data to plot on the x axis (x=vector_in_dataframe)
 + what data to plot on the y axis (y=vector_in_dataframe)
 
-3. An additional layer (signified by the + symbol) to describe what the plotted data should look like using the geom designation. 
+3. An additional layer (signified by the + symbol) to describe what the plotted data should look like using the "geom" designation. 
 
 In this case, we are using the periodicTable dataframe, and plotting numb on x and mass on y. We are specifiying the data be represented as individual points.
 
@@ -79,7 +93,6 @@ In this case, we are using the periodicTable dataframe, and plotting numb on x a
 ## Exercise 3.1 - Finding A Pattern
 
 Add a new chunk below by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Make a scatter plot of density (y axis) versus atomic mass (x axis). Plot the data as points.
-
 
 
 ## Exercise 3.2 - geom_point options
