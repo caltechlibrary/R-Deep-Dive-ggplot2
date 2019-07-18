@@ -1,27 +1,41 @@
 ---
 title: "R Deep Dive with ggplot2"
-Date: July 12, 2019
+Date: July 19, 2019
 output: html_notebook
 ---
 
 # 1 - Introduction - About R Notebooks
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. In R Markdown documents, code is embedded in chunks, marked off by three back ticks and then the designation {r}. You can add additional detail about the chunk after the 'r', i.e. setup, information about the calculation, etc. You can also specify if you want the code itself to be included in any output document (the 'echo' option), and if you want any displayed results to be included (the 'eval' option). By default both options are set to true, so both code and output will be included in any output. We will use code chunks throughout this document for examples, and you will also create your own code chunks.
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook,
+the results appear beneath the code. In R Markdown documents, code is embedded in chunks, marked off by
+three back ticks and then the designation {r}. You can add additional detail about the chunk after the 'r',
+i.e. setup, information about the calculation, etc. You can also specify if you want the code itself to be
+included in any output document (the 'echo' option), and if you want any displayed results to be included
+(the 'eval' option). By default both options are set to true, so both code and output will be included in
+any output. We will use code chunks throughout this document for examples, and you will also create your
+own code chunks.
 
 
 ## How to run a code chunk
 
-To execute a code chunk, click the *Run* button within the chunk (green arrow in the top right), or put your cursor inside the code chunk grey window and press *Cmd+Shift+Enter*.
+To execute a code chunk, click the *Run* button within the chunk (green arrow in the top right), or put
+your cursor inside the code chunk grey window and press *Cmd+Shift+Enter*.
 
 
 ## Document organization using Markdown
 
-You'll also notice that sections are marked off by hashmarks - #. This provides formatting when publishing this document as a PDF, slideshow, etc. It also allows for navigation via the navigation bar at the bottom of this document window. You can navigate throughout the document using the menu.
+You'll also notice that sections are marked off by hashmarks - #. This provides formatting when publishing
+this document as a PDF, slideshow, etc. It also allows for navigation via the navigation bar at the bottom
+of this document window. You can navigate throughout the document using the menu.
 
 
 ## Saving and previewing the notebook
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it. Click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file - this will appear in the right hand side window in the *Viewer* tab. The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+When you save the notebook, an HTML file containing the code and output will be saved alongside it. Click
+the *Preview* button or press *Cmd+Shift+K* to preview the HTML file - this will appear in the right hand
+side window in the *Viewer* tab. The preview shows you a rendered HTML copy of the contents of the editor.
+Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk
+when it was last run in the editor is displayed.
 
 
 # 2 - Setup
@@ -30,7 +44,8 @@ This set of commands downlaods, installs and attaches packages we will need for 
 
 ```{r setup, eval=F, echo=T}
 # You can include comments in code chunks by using a hash at the beginning of the line.
-# For this chunk, I set eval=F so you don't get all the package loading messages cluttering up your HTML output.
+# For this chunk, I set eval=F so you don't get all the package loading messages cluttering up your HTML
+# output.
 
 install.packages("tidyverse")
 install.packages("caTools")
@@ -81,27 +96,30 @@ This is an example of the most basic of ggplots. It has three key elements:
 
 1. `data=`: the data you are plotting (usually the name of your data frame in your environment)
 
-2. `aes()`: these are the **`aes`thetic** mappings for the plot - how we are visually representing the data variables. The basic ones used here are:
+2. `aes()`: these are the **`aes`thetic** mappings for the plot - how we are visually representing the data
+variables. The basic ones used here are:
 + what data to plot on the x axis (`x=vector_in_dataframe`)
 + what data to plot on the y axis (`y=vector_in_dataframe`)
 
-3. An additional layer (signified by the `+` symbol) to describe what the plotted data should look like using the `geom` designation. 
+3. An additional layer, signified by the `+` symbol, called `geom` to describe what the plotted data should look
+like (in this case, what symbol should be used for the scatterplot). 
 
 In this case, we are using the periodicTable dataframe, and plotting numb on x and mass on y. We are specifiying the data be represented as individual points.
 
 
 ## Exercise 3.1 - Finding A Pattern
 
-Add a new chunk below by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Make a scatter plot of density (y axis) versus atomic mass (x axis). Plot the data as points.
+Add a new chunk below by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Make a scatter plot of density (y axis) versus (atomic) mass (x axis). Plot the data as points.
 
 Insert chunk here :)
 
 
-## Exercise 3.2 - geom_point options
+## Exercise 3.2 - `geom_point` Options
 
-There are many options and aesthetics that you can add to a simple scatter plot using geom_point. An extensive overview can be found in the [https://ggplot2.tidyverse.org/reference/geom_point.html](online ggplot2 reference).
+There are many options and aesthetics that you can add to a simple scatter plot using geom_point. An extensive overview can be found in the [online ggplot2 reference](https://ggplot2.tidyverse.org/reference/geom_point.html).
 
-Let's replot our density graph with the following three additions to the `geom_point` layer:
+Let's replot our density graph with the following three additions to the `geom_point` layer, between the 
+parentheses:
 
 1. Change the colour to red: `colour = "red"`
 2. Change the shape to triangles: `shape = "triangle"`
@@ -115,7 +133,7 @@ each option by a comma.
 Insert chunk here :)
 
 
-## Exercise 3.3 - Using colour to elucidate patterns
+## Exercise 3.3 - Using Colour to Elucidate Patterns
 
 We can see from the previous plots some of the periodicity behind the periodic 
 table :) We've seen that we can change the color of an entire plot. Can we use 
@@ -125,7 +143,7 @@ additional aesthetic in the main data layer using `aes()`.
 
 Add a new chunk by clicking the *Insert Chunk* button (top of the window on the 
 toolbar) or by pressing *Cmd+Option+I*.
-Recreate your graph from Exercise 1, but add the following to the *main data layer* aesthetics, 
+Recreate your graph from Exercise 3.1, but add the following to the *main data layer* aesthetics, 
 after the x and y specification:
 `color=period`
 
@@ -134,7 +152,11 @@ Insert chunk here :)
 
 ## Exercise 3.4 - Adding Color by Factor
 
-Our previous plot shows us the variation, but it would be more accurate to have the periods as discrete colors and not a gradient. The reason it plotted period as a gradient is because in the data frame, period is an *integer*. ggplot treats number and integer vectors as continuous variables by default - hence it uses a gradient color scheme. In this case, we want period to be a categorical value, or a factor. This can be done by changing `color=period` to `color=factor(period)`.
+Our previous plot shows us the variation, but it would be more accurate to have the periods as discrete colors
+and not a gradient. The reason it plotted period as a gradient is because in the data frame, period is an
+*integer*. ggplot treats number and integer vectors as continuous variables by default - hence it uses a gradient
+color scheme. In this case, we want period to be a categorical value, or a factor. This can be done by changing
+`color=period` to `color=factor(period)`.
 
 Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Make this modification - `color=factor(period)` - and replot. (Watch your parenthesis!)
 
@@ -142,12 +164,11 @@ Insert chunk here :)
 
 Alternately, to get the same effect, you can change the data type for that column directly in the data frame. You can do that with the following command (you don't need to run this):
 
-```{r section_3-int_to_factor, eval=F, echo=T}
+```{r section_3_4-int_to_factor, eval=F, echo=T}
 periodicTable$period <- factor(periodicTable$period)
 ```
 
-Then, when you add `color=period`, ggplot will automatically plot it as 
-a factor.
+Then, when you add `color=period`, ggplot will automatically plot it as a factor.
 
 However, if you're not sure you want to permanently change a data type, just modify it in the ggplot expression.
 
@@ -278,8 +299,8 @@ using the following:
 `+ labs(x = "X Axis Label", y = "Y Axis Label", title = "Plot Title")`
 
 Add a new chunk by clicking the *Insert Chunk* button (top of the window on the toolbar) or by 
-pressing *Cmd+Option+I*. Recreate the graph from Exercise 4 and label the X-axis "Element Type", 
-Y-axis "Number of Elements", and the plot title "Numbers of Elements by Type". 
+pressing *Cmd+Option+I*. Recreate the graph from the previous section and label the X-axis "Element 
+Type", Y-axis "Number of Elements", and the plot title "Numbers of Elements by Type". 
 
 Insert chunk here :)
 
