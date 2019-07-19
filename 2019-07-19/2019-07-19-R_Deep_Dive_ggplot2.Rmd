@@ -109,7 +109,7 @@ In this case, we are using the periodicTable dataframe, and plotting numb on x a
 
 ## Exercise 3.1 - Finding A Pattern
 
-Add a new chunk below by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Make a scatter plot of density (y axis) versus (atomic) mass (x axis). Plot the data as points.
+Add a new chunk below by clicking the *Insert Chunk* button (top of the window on the toolbar) or by pressing *Cmd+Option+I*. Make a scatter plot of density (y axis) versus [atomic] mass (x axis). Plot the data as points.
 
 Insert chunk here :)
 
@@ -172,7 +172,7 @@ Then, when you add `color=period`, ggplot will automatically plot it as a factor
 
 However, if you're not sure you want to permanently change a data type, just modify it in the ggplot expression.
 
-You can change the type back to numberic with the following (also, you don't need to run this): 
+You can change the type back to numeric with the following (also, you don't need to run this): 
 
 ```{r section_3-factor_to_numeric, eval=F, echo=T}
 periodicTable$period <- as.numeric(periodicTable$period)
